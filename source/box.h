@@ -6,7 +6,6 @@
 
 class Box{
 public:
-//차례대로 위아래 좌우 
 	Box(int x=0, int y=0, bool isChar = false);
 	Box(Box& anti);
 	void setPosition(int x, int y);

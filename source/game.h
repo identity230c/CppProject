@@ -79,6 +79,12 @@ public:
 		}
 		if(canMove){
 			setMap(b.getPosition(), 0);
+			for(int i=0;i<lenBox;i++){
+				if(b.getPosition() == desti[i]){
+					setMap(b.getPosition(), 3);
+					break;
+				}
+			}
 			if(b.getIsChar()){
 				setMap(tmp, 5);
 			}else{
