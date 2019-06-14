@@ -1,7 +1,7 @@
 #ifndef _POSITION_H_
 #define _POSITION_H_
 
-#include<bits/stdc++.h>
+#include<iostream>
 using namespace std;
 
 class Box;
