@@ -87,10 +87,11 @@ int main()
 	keypad(stdscr, TRUE);
 	mapContainer mapcontainer;
 	Display d;
-	int ch, moves=0;
+	int ch;
 
 	while(mapcontainer.mapindex != 5) {
 		Game g(mapcontainer.getMap());
+		int moves = 0;
 	while ((ch = getch()) != KEY_F(1)) {
         clear();
         switch(ch) {

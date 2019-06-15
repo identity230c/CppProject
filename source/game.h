@@ -260,7 +260,10 @@ public:
 		}
 		return ret;
 	}
-
+	
+	int getMove(){
+		return imChar.getPushed();
+	}
 private:
 
 	int** gameMap;
