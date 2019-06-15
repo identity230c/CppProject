@@ -153,9 +153,11 @@ public:
 				}
 
 			}
-
-			canMove = move(boxArray[i], input);
-
+			if(b.getIsChar()){
+				canMove = move(boxArray[i], input);
+			}else{
+				canMove = false;
+			}
 		}
 
 		if (canMove) {

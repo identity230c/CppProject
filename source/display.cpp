@@ -10,18 +10,16 @@ using namespace std;
 
 class Display {
 public:
-	void update(Game g, WINDOW* win) {
+	void update(Game g) {
 		for(int i = 0; i<9; i++) {
         	for(int j = 0; j<7; j++) {
-            	printCell(i+2, 2*j, g.at(i,j), win);
+            	printCell(i+4, 2*j, g.at(i,j));
 	        }
    		}
-		//mvprintw(win, 10, 5, "aa");
 		refresh();
-    	getch();
 	}
 private:
-	void printCell(int x, int y, int c, WINDOW* win) {
+	void printCell(int x, int y, int c) {
 		if (c==0) { // Void
 			attron(COLOR_PAIR(4));
         	mvprintw(x, y, "  ");
@@ -61,7 +59,7 @@ int main()
 	keypad(stdscr, TRUE);
 	WINDOW *win1;
 	initscr();
-	resize_term(25, 25);
+	resize_term(14, 25);
 
 	start_color();
 	init_pair(1, COLOR_WHITE,COLOR_BLACK); // wall
@@ -71,17 +69,9 @@ int main()
     init_pair(5, COLOR_BLUE, COLOR_BLACK); // player
 	
 	border('*','*','*','*','*','*','*','*');
-	mvprintw(1,1,"SOKOBAN");
-	mvprintw(2,1,"press any key to start");
+	mvprintw(4,1,"     S O K O B A N");
+	mvprintw(6,1,"press any key to start");
 	refresh();
-	getch();
-	
-	win1 = newwin(20, 20, 3, 3);
-	wbkgd(win1, COLOR_PAIR(1));
-	wattron(win1, COLOR_PAIR(1));
-	mvwprintw(win1, 1, 1, "A new window");
-	wborder(win1, '@','@','@','@','@','@','@','@');
-	wrefresh(win1);
 	getch();
 	
 	keypad(stdscr, TRUE);
@@ -91,43 +81,53 @@ int main()
 
 	while(mapcontainer.mapindex != 5) {
 		Game g(mapcontainer.getMap());
-		int moves = 0;
-	while ((ch = getch()) != KEY_F(1)) {
-        clear();
-        switch(ch) {
-            case KEY_LEFT:
-                g.move(g.getChar(), 1);
-                break;
-            case KEY_RIGHT:
-                g.move(g.getChar(), 0);
-                break;
-            case KEY_UP:
-                g.move(g.getChar(), 2);
-                break;
-            case KEY_DOWN:
-                g.move(g.getChar(), 3);
+		clear();
+		printw("%s", "level:");
+        printw("%d", mapcontainer.mapindex+1);
+        printw("%s", "\tmoves:");
+        printw("%d", g.getMove());
+        printw("%s", "\npushed:");
+		printw("%d", g.getPushed());
+		printw("%s" "\nmove:arrow\nexit:F1 reset:F2");
+		d.update(g);
+		ch = getch();
+		while (ch != KEY_F(1) && ch != KEY_F(2)) {
+        	clear();
+        	switch(ch) {
+	            case KEY_LEFT:
+    	            g.move(g.getChar(), 1);
+        	        break;
+	            case KEY_RIGHT:
+    	            g.move(g.getChar(), 0);
+        	        break;
+	            case KEY_UP:
+    	            g.move(g.getChar(), 2);
+        	        break;
+	            case KEY_DOWN:
+    	            g.move(g.getChar(), 3);
+					break;
+	    	}
+			if(g.isWin()) {
+				printw("%s", "You Win!\npress any key");
+				d.update(g);
+				getch();
+				mapcontainer.getNextMap();
 				break;
-    	}
-		moves++;
-		if(g.isWin()) {
-			printw("%s", "You Win!\npress any key");
-			d.update(g, win1);
-			getch();
-			mapcontainer.getNextMap();
-			break;
+			}
+			else {
+				printw("%s", "level:");
+				printw("%d", mapcontainer.mapindex+1);
+				printw("%s", "\tmoves:");
+				printw("%d", g.getMove());
+				printw("%s", "\npushed:");
+				printw("%d", g.getPushed());
+				printw("%s", "\nmove:arrow\nexit:F1 reset:F2");
+			}
+			d.update(g);
+			ch = getch();
 		}
-		else {
-			printw("%s", "level:");
-			printw("%d", mapcontainer.mapindex+1);
-			printw("%s", "\tmoves:");
-			printw("%d", moves);
-		}
-		d.update(g, win1);
+		if (ch == KEY_F(1)) break;
 	}
-	
-
-	}
-	delwin(win1);
 	endwin();
 	return 0;
 }

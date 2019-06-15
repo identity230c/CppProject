@@ -75,7 +75,7 @@ private:
 
 	bool isChar;
 	
-	int pushed;
+	int pushed=0;
 };
 
 
