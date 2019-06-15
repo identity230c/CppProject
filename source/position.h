@@ -22,21 +22,36 @@ public:
 
 	int y;
 
-	Position(int x = 0, int y = 0);
+	Position(int x = 0, int y = 0) : x(x), y(y){}
 
-	Position(const Position& anti);
-
-
+	Position(const Position& anti) : x(anti.x), y(anti.y){}
 
 
 
-	bool operator !=(const Position& anti);
-
-	bool operator ==(const Position& anti) const;
 
 
+	bool operator !=(const Position& anti){
+		if (anti.x == x && anti.y == y) {
+        	return false;
+    	}else {
+    	    return true;
+    	}	
+	}
 
-	void operator =(const Position& anti);
+	bool operator ==(const Position& anti) const{
+ 		if (anti.x == x && anti.y == y) {
+        	return true;
+   		 }else {
+        	return false;
+    	}
+	}
+
+
+
+	void operator =(const Position& anti){
+		x = anti.x;
+	    y = anti.y;
+	}
 
 };
 
